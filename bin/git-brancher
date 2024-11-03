@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Main script for git-brancher
+# Load necessary functions and execute main logic
