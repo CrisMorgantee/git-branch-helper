@@ -1,4 +1,19 @@
 #!/usr/bin/env bash
+#
+# MIT License
+#
+# Copyright (c) 2024 [Cristiano Morgante]
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+#
+#THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # === Define Directories ===
 SOURCE="${BASH_SOURCE[0]}"
@@ -12,10 +27,10 @@ ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # === Load Configuration ===
 load_config() {
-  # Path to the default configuration file
-  DEFAULT_CONFIG="$ROOT_DIR/config/gkb.conf"
+  local DEFAULT_CONFIG="$ROOT_DIR/config/gkb.conf"
 
   # Check if the default configuration file exists
+  # shellcheck source=../config/gkb.conf
   if [ -f "$DEFAULT_CONFIG" ]; then
     source "$DEFAULT_CONFIG"
   else
@@ -31,7 +46,8 @@ load_config() {
   CACHE_FILE="$CACHE_DIR/branch"
 
   # Load user configuration
-  CONFIG_FILE="$HOME/.gkb_config"
+  local CONFIG_FILE="$HOME/.gkb_config"
+  # shellcheck disable=SC1090
   if [ -f "$CONFIG_FILE" ]; then
     source "$CONFIG_FILE"
   fi
@@ -39,13 +55,14 @@ load_config() {
 
 # === Display Help ===
 display_help() {
-  echo "Usage: gkb [-n] [-a] [-c cache_duration] [-p] [-f] [-h] [-man] [branch_name]"
+  echo "Usage: gkb [-n] [-a] [-c cache_duration] [-p] [-f] [-cl] [-h] [-man] [branch_name]"
   echo "Options:"
   echo "  -n     Do not execute 'git pull' after checkout"
   echo "  -a     Execute 'git fetch --all'"
   echo "  -c     Set cache duration in minutes (default $GKB_CACHE_DURATION)"
   echo "  -p     Remove local branches that no longer exist on the remote"
   echo "  -f     Force switch branches even if there are uncommitted changes"
+  echo "  -cl    Clear the branch cache file"
   echo "  -h     Display this help"
   echo "  -man   Show the complete manual"
 }
@@ -61,31 +78,39 @@ parse_options() {
   FETCH_ALL=false
   PRUNE=false
   FORCE=false
+  CLEAR_CACHE=false
 
   # Check if the first argument is '-man'
-  if [[ "$1" == "--man" ]]; then
+  if [[ "$1" == "-man" ]]; then
     display_manual
     exit 0
   fi
 
-  while getopts "nac:hpf" opt; do
-    case $opt in
-    n) SYNC=false ;;
-    a) FETCH_ALL=true ;;
-    c) GKB_CACHE_DURATION="$OPTARG" ;;
-    h)
+  # Custom option parsing to support multi-letter options
+  while [[ "$1" == -* ]]; do
+    case "$1" in
+    -n) SYNC=false ;;
+    -a) FETCH_ALL=true ;;
+    -c)
+      shift
+      GKB_CACHE_DURATION="$1"
+      ;;
+    -p) PRUNE=true ;;
+    -f) FORCE=true ;;
+    -cl) CLEAR_CACHE=true ;;
+    -h)
       display_help
       exit 0
       ;;
-    p) PRUNE=true ;;
-    f) FORCE=true ;;
     *)
+      echo "Invalid option: $1"
       display_help
       exit 1
       ;;
     esac
+    shift
   done
-  shift $((OPTIND - 1))
+
   BRANCH_NAME="$1"
 }
 
@@ -94,6 +119,16 @@ check_remote_access() {
   if ! git ls-remote &>/dev/null; then
     echo "Error: The remote repository is not accessible. Please check your network connection."
     exit 1
+  fi
+}
+
+# === Clear Cache ===
+clear_cache() {
+  if [ -f "$CACHE_FILE" ]; then
+    rm "$CACHE_FILE"
+    echo "Branch cache cleared."
+  else
+    echo "No cache file to clear."
   fi
 }
 
@@ -212,6 +247,12 @@ switch_to_branch() {
 main() {
   load_config
   parse_options "$@"
+
+  if $CLEAR_CACHE; then
+    clear_cache
+    exit 0
+  fi
+
   check_remote_access
   fetch_updates
   prune_branches

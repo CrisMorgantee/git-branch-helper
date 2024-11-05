@@ -1,57 +1,95 @@
-.TH GKB 1 "Novembro 2023" "gkb versão 1.0" "Comandos do Usuário"
-.SH NOME
-gkb \- Utilitário de gerenciamento de branches Git
-
-.SH SINOPSE
+.\" Manpage for gkb
+.TH gkb 1 "November 2024" "Version 1.0" "User Commands"
+.SH NAME
+gkb \- Git branch management utility
+.SH SYNOPSIS
 .B gkb
-[\-n] [\-a] [\-c \fICACHE_DURATION\fP] [\-p] [\-h] [\-man] [\fIBRANCH_NAME\fP]
+[\fIoptions\fR] [\fIbranch_name\fR]
+.SH DESCRIPTION
+\fBgkb\fR is a utility script to simplify the management of Git branches. It allows you to quickly switch between branches, create new branches, fetch updates, and prune outdated branches. It also handles uncommitted changes gracefully, prompting the user before switching branches.
 
-.SH DESCRIÇÃO
-O comando \fBgkb\fP auxilia no gerenciamento de branches no Git, automatizando tarefas comuns como troca de branches, atualização e limpeza de branches locais.
+If no \fIbranch_name\fR is provided, \fBgkb\fR will attempt to determine the last created remote branch that matches certain criteria defined in the configuration.
 
-.SH OPÇÕES
+.SH OPTIONS
 .TP
 .B \-n
-Não executa 'git pull' após o checkout.
+Do not execute 'git pull' after checkout.
 .TP
 .B \-a
-Executa 'git fetch --all'.
+Execute 'git fetch \-\-all'.
 .TP
-.B \-c \fICACHE_DURATION\fP
-Define a duração do cache em minutos (padrão 30).
+.B \-c \fIcache_duration\fR
+Set cache duration in minutes (default is 30).
 .TP
 .B \-p
-Remove branches locais que não existem mais no remoto.
+Remove local branches that no longer exist on the remote.
+.TP
+.B \-f
+Force switch branches even if there are uncommitted changes.
+.TP
+.B \-cl
+Clear the branch cache file.
 .TP
 .B \-h
-Exibe a ajuda.
+Display this help message.
 .TP
 .B \-man
-Mostra o manual completo.
+Show the complete manual.
+
+.SH USAGE
+To switch to a branch:
+.IP
+\fBgkb [branch_name]\fR
+.PP
+If no branch name is provided, \fBgkb\fR will attempt to determine the most recent remote branch that matches the specified criteria.
+
+.SH EXAMPLES
 .TP
-.B \fIBRANCH_NAME\fP
-Nome do branch para o qual deseja trocar.
-
-.SH EXEMPLOS
-Trocar para o último branch criado:
-
-$ gkb
-
-Trocar para um branch específico sem executar 'git pull':
-
-$ gkb -n feature-branch
-
-.SH ARQUIVOS
-.PD 0
+Switch to the branch 'feature/new-feature':
+.IP
+\fBgkb feature/new-feature\fR
 .TP
-$HOME/.gkb_config
-Arquivo de configuração do usuário para sobrepor os valores padrão.
+Fetch all updates and prune obsolete branches:
+.IP
+\fBgkb \-a \-p\fR
+.TP
+Create a new local branch from 'main':
+.IP
+\fBgkb\fR
+.PP
+(If no appropriate branch is found, \fBgkb\fR will prompt to create a new branch.)
 
-.SH VER TAMBÉM
+.SH CONFIGURATION
+\fBgkb\fR reads configuration from a default config file located at \fIconfig/gkb.conf\fR in the project directory, and from a user-specific config file at \fI$HOME/.gkb_config\fR.
+
+The configuration files can define the following variables:
+
+.TP
+.B GKB_REMOTE
+Specifies the remote repository name (default is 'origin').
+.TP
+.B GKB_CACHE_DURATION
+Specifies the cache duration in minutes (default is 30).
+.TP
+.B GKB_EXCLUDE_BRANCHES
+A regex pattern of branch names to exclude when determining the latest branch (default is 'main|master|develop').
+
+.SH FILES
+.TP
+.I config/gkb.conf
+Default configuration file.
+.TP
+.I $HOME/.gkb_config
+User-specific configuration file.
+
+.SH SEE ALSO
 git(1)
 
-.SH AUTOR
-Seu Nome <seuemail@example.com>
+.SH AUTHOR
+Written by Cristiano Morgante.
 
-.SH LICENÇA
-Informe aqui a licença do seu projeto.
+.SH LICENSE
+MIT License.
+
+.SH BUGS
+Report bugs to <your_email@example.com>.
