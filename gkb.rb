@@ -6,10 +6,10 @@ class Gkb < Formula
   license "MIT"
 
   def install
-      bin.install "#{buildpath}/git-branch-helper-v0.2/bin/gkb"
-      etc.install "#{buildpath}/git-branch-helper-v0.2/config/gkb.conf" => "gkb/gkb.conf"
-      man1.install "#{buildpath}/git-branch-helper-v0.2/man/gkb.1"
-      prefix.install "#{buildpath}/git-branch-helper-v0.2/aliases/git-aliases.sh"
+    bin.install "#{buildpath}/git-branch-helper-v0.2/bin/gkb"
+          etc.install "#{buildpath}/git-branch-helper-v0.2/config/gkb.conf" => "gkb/gkb.conf"
+          man1.install "#{buildpath}/git-branch-helper-v0.2/man/gkb.1"
+          prefix.install "#{buildpath}/git-branch-helper-v0.2/aliases/git-aliases.sh"
   end
 
   def caveats
@@ -26,6 +26,6 @@ class Gkb < Formula
   end
 
   test do
-    assert_match "Usage:", shell_output("#{bin}/gkb -h"
+    assert_match "Usage:", shell_output("#{bin}/gkb -h")
   end
 end
