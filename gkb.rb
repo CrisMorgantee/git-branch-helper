@@ -4,13 +4,12 @@ class Gkb < Formula
   url "https://github.com/crismorgantee/git-branch-helper/archive/v0.2.tar.gz"
   sha256 "d990aea8545f5083e4f74be239c9981782aeec57d4237358a19f0df83eaf412a"
   license "MIT"
-  version "0.2"
 
   def install
-    bin.install "bin/gkb"
-    etc.install "config/gkb.conf" => "gkb/gkb.conf"
-    man1.install "man/gkb.1"
-    prefix.install "aliases/git-aliases.sh"
+      bin.install "#{buildpath}/git-branch-helper-v0.2/bin/gkb"
+      etc.install "#{buildpath}/git-branch-helper-v0.2/config/gkb.conf" => "gkb/gkb.conf"
+      man1.install "#{buildpath}/git-branch-helper-v0.2/man/gkb.1"
+      prefix.install "#{buildpath}/git-branch-helper-v0.2/aliases/git-aliases.sh"
   end
 
   def caveats
@@ -22,11 +21,11 @@ class Gkb < Formula
         $HOME/.gkb_config
 
       To use the included Git aliases, add the following line to your shell configuration:
-        source #{HOMEBREW_PREFIX}/opt/gkb/aliases/git-aliases.sh
+        source #{opt_prefix}/git-aliases.sh
     EOS
   end
 
   test do
-    assert_match "Usage:", shell_output("#{bin}/gkb -h")
+    assert_match "Usage:", shell_output("#{bin}/gkb -h"
   end
 end
