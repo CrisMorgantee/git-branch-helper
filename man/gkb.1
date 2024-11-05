@@ -1,0 +1,57 @@
+.TH GKB 1 "Novembro 2023" "gkb versão 1.0" "Comandos do Usuário"
+.SH NOME
+gkb \- Utilitário de gerenciamento de branches Git
+
+.SH SINOPSE
+.B gkb
+[\-n] [\-a] [\-c \fICACHE_DURATION\fP] [\-p] [\-h] [\-man] [\fIBRANCH_NAME\fP]
+
+.SH DESCRIÇÃO
+O comando \fBgkb\fP auxilia no gerenciamento de branches no Git, automatizando tarefas comuns como troca de branches, atualização e limpeza de branches locais.
+
+.SH OPÇÕES
+.TP
+.B \-n
+Não executa 'git pull' após o checkout.
+.TP
+.B \-a
+Executa 'git fetch --all'.
+.TP
+.B \-c \fICACHE_DURATION\fP
+Define a duração do cache em minutos (padrão 30).
+.TP
+.B \-p
+Remove branches locais que não existem mais no remoto.
+.TP
+.B \-h
+Exibe a ajuda.
+.TP
+.B \-man
+Mostra o manual completo.
+.TP
+.B \fIBRANCH_NAME\fP
+Nome do branch para o qual deseja trocar.
+
+.SH EXEMPLOS
+Trocar para o último branch criado:
+
+$ gkb
+
+Trocar para um branch específico sem executar 'git pull':
+
+$ gkb -n feature-branch
+
+.SH ARQUIVOS
+.PD 0
+.TP
+$HOME/.gkb_config
+Arquivo de configuração do usuário para sobrepor os valores padrão.
+
+.SH VER TAMBÉM
+git(1)
+
+.SH AUTOR
+Seu Nome <seuemail@example.com>
+
+.SH LICENÇA
+Informe aqui a licença do seu projeto.
