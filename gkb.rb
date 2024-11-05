@@ -6,11 +6,15 @@ class Gkb < Formula
   license "MIT"
 
   def install
-    bin.install "#{buildpath}/bin/gkb"
-    etc.install "#{buildpath}/config/gkb.conf" => "gkb/gkb.conf"
-    man1.install "#{buildpath}/man/gkb.1"
-    prefix.install "#{buildpath}/aliases/git-aliases.sh"
+    dir = Dir.glob("git-branch-helper-*").first
+    cd dir do
+      bin.install "bin/gkb"
+      etc.install "config/gkb.conf" => "gkb/gkb.conf"
+      man1.install "man/gkb.1"
+      prefix.install "aliases/git-aliases.sh"
+    end
   end
+
 
   def caveats
     <<~EOS
