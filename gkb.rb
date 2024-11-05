@@ -5,6 +5,8 @@ class Gkb < Formula
   sha256 "d990aea8545f5083e4f74be239c9981782aeec57d4237358a19f0df83eaf412a"
   license "MIT"
 
+  version "0.2"
+
    def install
       bin.install "#{buildpath}/bin/gkb"
       etc.install "#{buildpath}/config/gkb.conf" => "gkb/gkb.conf"
