@@ -1,7 +1,7 @@
 class Gkb < Formula
   desc "Git branch management utility"
   homepage "https://github.com/crismorgantee/git-branch-helper"
-  url "https://github.com/crismorgantee/git-branch-helper/archive/v0.1.tar.gz"
+  url "https://github.com/crismorgantee/git-branch-helper/archive/v0.2.tar.gz"
   sha256 "d990aea8545f5083e4f74be239c9981782aeec57d4237358a19f0df83eaf412a"
   license "MIT"
 
