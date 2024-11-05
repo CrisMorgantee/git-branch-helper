@@ -7,21 +7,21 @@ class Gkb < Formula
 
   def install
     bin.install "#{buildpath}/bin/gkb"
-          etc.install "#{buildpath}/config/gkb.conf" => "gkb/gkb.conf"
-          man1.install "#{buildpath}/man/gkb.1"
-          prefix.install "#{buildpath}/aliases/git-aliases.sh"
+    etc.install "#{buildpath}/config/gkb.conf" => "gkb/gkb.conf"
+    man1.install "#{buildpath}/man/gkb.1"
+    prefix.install "#{buildpath}/aliases/git-aliases.sh"
   end
 
   def caveats
     <<~EOS
       The default configuration file has been installed to:
-        #{etc}/gkb/gkb.conf
+        #{buildpath}/config/gkb.conf
 
       To customize gkb, you can create a user-specific configuration file at:
         $HOME/.gkb_config
 
       To use the included Git aliases, add the following line to your shell configuration:
-        source #{opt_prefix}/git-aliases.sh
+        source #{buildpath}/aliases/git-aliases.sh
     EOS
   end
 
