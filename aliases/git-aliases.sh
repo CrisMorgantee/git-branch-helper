@@ -29,6 +29,3 @@ wips() {
   git commit -m "wip" >/dev/null
   git push
 }
-
-# Clear branch cache (from configuration)
-alias clrgkb="rm -f '$cache_file' && echo 'Branch cache cleared.'"

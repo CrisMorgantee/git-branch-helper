@@ -1,0 +1,95 @@
+.\" Manpage for gkb
+.TH gkb 1 "November 2024" "Version 1.0" "User Commands"
+.SH NAME
+gkb \- Git branch management utility
+.SH SYNOPSIS
+.B gkb
+[\fIoptions\fR] [\fIbranch_name\fR]
+.SH DESCRIPTION
+\fBgkb\fR is a utility script to simplify the management of Git branches. It allows you to quickly switch between branches, create new branches, fetch updates, and prune outdated branches. It also handles uncommitted changes gracefully, prompting the user before switching branches.
+
+If no \fIbranch_name\fR is provided, \fBgkb\fR will attempt to determine the last created remote branch that matches certain criteria defined in the configuration.
+
+.SH OPTIONS
+.TP
+.B \-n
+Do not execute 'git pull' after checkout.
+.TP
+.B \-a
+Execute 'git fetch \-\-all'.
+.TP
+.B \-c \fIcache_duration\fR
+Set cache duration in minutes (default is 30).
+.TP
+.B \-p
+Remove local branches that no longer exist on the remote.
+.TP
+.B \-f
+Force switch branches even if there are uncommitted changes.
+.TP
+.B \-cl
+Clear the branch cache file.
+.TP
+.B \-h
+Display this help message.
+.TP
+.B \-man
+Show the complete manual.
+
+.SH USAGE
+To switch to a branch:
+.IP
+\fBgkb [branch_name]\fR
+.PP
+If no branch name is provided, \fBgkb\fR will attempt to determine the most recent remote branch that matches the specified criteria.
+
+.SH EXAMPLES
+.TP
+Switch to the branch 'feature/new-feature':
+.IP
+\fBgkb feature/new-feature\fR
+.TP
+Fetch all updates and prune obsolete branches:
+.IP
+\fBgkb \-a \-p\fR
+.TP
+Create a new local branch from 'main':
+.IP
+\fBgkb\fR
+.PP
+(If no appropriate branch is found, \fBgkb\fR will prompt to create a new branch.)
+
+.SH CONFIGURATION
+\fBgkb\fR reads configuration from a default config file located at \fIconfig/gkb.conf\fR in the project directory, and from a user-specific config file at \fI$HOME/.gkb_config\fR.
+
+The configuration files can define the following variables:
+
+.TP
+.B GKB_REMOTE
+Specifies the remote repository name (default is 'origin').
+.TP
+.B GKB_CACHE_DURATION
+Specifies the cache duration in minutes (default is 30).
+.TP
+.B GKB_EXCLUDE_BRANCHES
+A regex pattern of branch names to exclude when determining the latest branch (default is 'main|master|develop').
+
+.SH FILES
+.TP
+.I config/gkb.conf
+Default configuration file.
+.TP
+.I $HOME/.gkb_config
+User-specific configuration file.
+
+.SH SEE ALSO
+git(1)
+
+.SH AUTHOR
+Written by Cristiano Morgante.
+
+.SH LICENSE
+MIT License.
+
+.SH BUGS
+Report bugs to <your_email@example.com>.
