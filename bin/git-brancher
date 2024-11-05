@@ -1,3 +1,30 @@
 #!/usr/bin/env bash
-# Main script for git-brancher
-# Load necessary functions and execute main logic
+# bin/git-brancher
+
+# Carregar Bibliotecas Externas
+source "$(dirname "$0")/../lib/options.sh"
+source "$(dirname "$0")/../lib/config.sh"
+source "$(dirname "$0")/../lib/git_utils.sh"
+source "$(dirname "$0")/../lib/ui.sh"
+
+# Definir Variáveis Globais
+cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/gkb"
+mkdir -p "$cache_dir"
+cache_file="$cache_dir/branch"
+remote=${GKB_REMOTE:-origin}
+cache_duration=${GKB_CACHE_DURATION:-30}
+exclude_branches=${GKB_EXCLUDE_BRANCHES:-"main|master|develop"}
+sync=true
+fetch_all=false
+prune=false
+
+# Função Principal
+main() {
+  parse_options "$@"
+  load_config
+
+  check_prerequisites || exit 1
+  main_logic "$branch_name"
+}
+
+main "$@"
