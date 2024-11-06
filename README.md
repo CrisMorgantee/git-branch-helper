@@ -1,26 +1,28 @@
-# gkb - Git Branch Management Utility
+# Dev Helper Tools (DHT)
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+Dev Helper Tools é um conjunto de ferramentas e aliases para auxiliar desenvolvedores em tarefas comuns, como
+gerenciamento de branches Git, comandos frequentes de Laravel e atalhos do sistema. O DHT permite que você personalize
+quais funcionalidades deseja utilizar e gerencia automaticamente dependências necessárias.
 
-`gkb` is a utility script to simplify the management of Git branches. It allows you to quickly switch between branches,
-create new branches, fetch updates, and prune outdated branches. It handles uncommitted changes gracefully by prompting
-the user before switching branches.
+## Funcionalidades
 
-## Features
+- **Gerenciamento de Branches Git**: Com o comando `dht`, você pode alternar facilmente entre branches, criar novos
+  branches, buscar atualizações e limpar branches obsoletos.
+- **Aliases Personalizados**: Carregue aliases para Git, Laravel e comandos do sistema, agilizando seu fluxo de
+  trabalho.
+- **Gerenciamento de Dependências**: O DHT verifica se as dependências necessárias estão instaladas e oferece a opção de
+  instalá-las automaticamente.
 
-- Quickly switch to the latest remote branch matching specified criteria.
-- Automatically create new local branches from remote or specified base branches.
-- Fetch updates from the remote repository.
-- Prune local branches that no longer exist on the remote.
-- Clear cached branch information.
-- Includes useful Git aliases for common commands.
+## Instalação
 
-## Installation
+### Pré-requisitos
 
-### Using Homebrew
+- **Zsh**: O DHT é um plugin para o Oh My Zsh, portanto, é necessário ter o Zsh instalado.
+- **Oh My Zsh**: Você precisa ter o Oh My Zsh configurado em seu ambiente.
 
-You can install `gkb` using Homebrew:
+### Instalação Manual
 
-```sh
-brew tap crismorgantee/git-branch-helper
-brew install gkb
+1. **Clone o repositório** no diretório de plugins do Oh My Zsh:
+
+   ```sh
+   git clone https://github.com/crismorgantee/dev-helper-tools.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/dev-helper-tools
